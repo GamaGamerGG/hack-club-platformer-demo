@@ -1,6 +1,10 @@
 extends CharacterBody2D
 
-@onready var anim_sprite = $AnimatedSprite2D
+signal died
+
+@onready var anim_sprite := $AnimatedSprite2D
+@onready var hurtbox := $Hurtbox
+@onready var spawn_pos := global_position
 
 const SPEED := 250.0
 const GRAVITY := 1.25
@@ -10,18 +14,21 @@ const MAX_JUMP_TIME := 0.25
 
 var jumpTimer := 0.0
 var jumping := false
-
-
+var jumped := false
 
 func _physics_process(delta: float) -> void:
+	
 	if not is_on_floor():
 		velocity += get_gravity() * delta * GRAVITY
+	else:
+		jumped = false
 	
 	
-	jumping = Input.is_action_pressed("jump") and jumpTimer < MAX_JUMP_TIME
+	jumping = Input.is_action_pressed("jump") and jumpTimer < MAX_JUMP_TIME and jumped
 	
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
+		jumped = true
 	
 	if jumping:
 		velocity.y += JUMP_EXT_VELOCITY * sqrt(jumpTimer / MAX_JUMP_TIME)
@@ -53,3 +60,13 @@ func _physics_process(delta: float) -> void:
 		anim_sprite.play("idle")
 	
 	move_and_slide()
+	
+	if global_position.y >= 650:
+		died.emit()
+
+
+func _on_died() -> void:
+	global_position = spawn_pos
+
+func _on_hurtbox_body_entered(_body: Node2D) -> void:
+	died.emit()
