@@ -12,9 +12,10 @@ const GRAVITY := 1.25
 const JUMP_VELOCITY := -300.0
 const JUMP_EXT_VELOCITY := -30.0
 const MAX_JUMP_TIME := 0.25
+const COYOTE_TIME := 0.1
 
-var jumpTimer := 0.0
-var jumping := false
+var jump_timer := 0.0
+var coyote_timer := COYOTE_TIME
 var jumped := false
 var input := false
 var extra_jumps := 0
@@ -29,26 +30,26 @@ func _physics_process(delta: float) -> void:
 	
 	if not is_on_floor():
 		velocity += get_gravity() * delta * GRAVITY
+		coyote_timer += delta
 	else:
 		jumped = false
+		coyote_timer = 0.0
 	
 	if Input.is_action_just_released("jump"):
 		jumped = false
 	
-	jumping = input and Input.is_action_pressed("jump") and jumpTimer < MAX_JUMP_TIME and jumped
-	
-	if input and Input.is_action_just_pressed("jump") and (is_on_floor() or extra_jumps > 0):
-		if not is_on_floor():
+	if input and not jumped and Input.is_action_just_pressed("jump") and (coyote_timer <= COYOTE_TIME or extra_jumps > 0):
+		if not coyote_timer <= COYOTE_TIME:
 			extra_jumps -= 1
 		velocity.y = JUMP_VELOCITY
 		jumped = true
 	
-	if jumping:
-		velocity.y += JUMP_EXT_VELOCITY * sqrt(jumpTimer / MAX_JUMP_TIME)
-		jumpTimer += delta
+	if input and Input.is_action_pressed("jump") and jump_timer <= MAX_JUMP_TIME and jumped:
+		velocity.y += JUMP_EXT_VELOCITY * sqrt(jump_timer / MAX_JUMP_TIME)
+		jump_timer += delta
 	
 	if not Input.is_action_pressed("jump"):
-		jumpTimer = 0.0
+		jump_timer = 0.0
 	
 	
 	var direction := Input.get_axis("left", "right")
@@ -84,8 +85,8 @@ func _physics_process(delta: float) -> void:
 func _on_died() -> void:
 	global_position = spawn_pos
 	velocity = Vector2(0, 0)
-	jumpTimer = 0.0
-	jumping = false
+	jump_timer = 0.0
+	coyote_timer = COYOTE_TIME
 	jumped = false
 	input = false
 
