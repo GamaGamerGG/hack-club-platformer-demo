@@ -15,6 +15,7 @@ const MAX_JUMP_TIME := 0.25
 var jumpTimer := 0.0
 var jumping := false
 var jumped := false
+var input := false
 
 func _physics_process(delta: float) -> void:
 	
@@ -24,9 +25,9 @@ func _physics_process(delta: float) -> void:
 		jumped = false
 	
 	
-	jumping = Input.is_action_pressed("jump") and jumpTimer < MAX_JUMP_TIME and jumped
+	jumping = input and Input.is_action_pressed("jump") and jumpTimer < MAX_JUMP_TIME and jumped
 	
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if input and Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = JUMP_VELOCITY
 		jumped = true
 	
@@ -39,7 +40,7 @@ func _physics_process(delta: float) -> void:
 	
 	
 	var direction := Input.get_axis("left", "right")
-	if direction:
+	if input and direction:
 		velocity.x = direction * SPEED
 	else:
 		velocity.x = move_toward(velocity.x, 0, SPEED)
@@ -63,10 +64,18 @@ func _physics_process(delta: float) -> void:
 	
 	if global_position.y >= 650:
 		died.emit()
+	
+	if not input and is_on_floor():
+		input = true
 
 
 func _on_died() -> void:
 	global_position = spawn_pos
+	velocity = Vector2(0, 0)
+	jumpTimer = 0.0
+	jumping = false
+	jumped = false
+	input = false
 
 func _on_hurtbox_body_entered(_body: Node2D) -> void:
 	died.emit()
