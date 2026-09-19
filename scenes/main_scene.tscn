@@ -362,6 +362,16 @@ collision_mask = 2
 position = Vector2(0, 1.25)
 shape = SubResource("RectangleShape2D_sxuw7")
 
+[node name="JumpCounter" type="RichTextLabel" parent="Player" unique_id=1302554616]
+offset_left = -13.0
+offset_top = -56.0
+offset_right = 14.0
+offset_bottom = -25.0
+theme_override_font_sizes/normal_font_size = 24
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 2
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=564486156]
 texture_filter = 1
 scale = Vector2(3, 3)

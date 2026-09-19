@@ -4,6 +4,7 @@ signal died
 
 @onready var anim_sprite := $AnimatedSprite2D
 @onready var hurtbox := $Hurtbox
+@onready var jump_counter := $JumpCounter
 @onready var spawn_pos := global_position
 
 const SPEED := 250.0
@@ -16,6 +17,13 @@ var jumpTimer := 0.0
 var jumping := false
 var jumped := false
 var input := false
+var extra_jumps := 0
+
+func _process(delta: float) -> void:
+	if extra_jumps:
+		jump_counter.text = str(extra_jumps)
+	else:
+		jump_counter.text = ""
 
 func _physics_process(delta: float) -> void:
 	
@@ -24,10 +32,14 @@ func _physics_process(delta: float) -> void:
 	else:
 		jumped = false
 	
+	if Input.is_action_just_released("jump"):
+		jumped = false
 	
 	jumping = input and Input.is_action_pressed("jump") and jumpTimer < MAX_JUMP_TIME and jumped
 	
-	if input and Input.is_action_just_pressed("jump") and is_on_floor():
+	if input and Input.is_action_just_pressed("jump") and (is_on_floor() or extra_jumps > 0):
+		if not is_on_floor():
+			extra_jumps -= 1
 		velocity.y = JUMP_VELOCITY
 		jumped = true
 	
