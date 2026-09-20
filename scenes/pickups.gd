@@ -2,9 +2,12 @@ extends TileMapLayer
 
 signal reset_pickups
 
+@onready var audio_player := get_parent().get_node("Camera2D").get_node("AudioPlayer5")
+
 const RESET_TIME := 2.5
 const PICKUP_COORDS := [Vector2i(0, 1), Vector2i(1, 1)]
 
+var pause := false
 var times := []
 var spent_pickups := []
 # [coords, atlas_coords.x]
@@ -16,14 +19,17 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	for i in range(times.size()):
-		times[i] += delta
-	while times.size() > 0 and times[0] >= RESET_TIME:
-		reset_pickup(spent_pickups[0][0], spent_pickups[0][1])
-		times.pop_front()
-		spent_pickups.pop_front()
+	if not pause:
+		for i in range(times.size()):
+			times[i] += delta
+		while times.size() > 0 and times[0] >= RESET_TIME:
+			reset_pickup(spent_pickups[0][0], spent_pickups[0][1])
+			times.pop_front()
+			spent_pickups.pop_front()
 
-func reset_pickup(coords: Vector2i, atlas_x: int) -> void:
+func reset_pickup(coords: Vector2i, atlas_x: int, _audio := true) -> void:
+	if _audio:
+		audio_player.play()
 	set_cell(coords, 2, Vector2i(atlas_x, 1))
 
 func queue_pickup(pos: Vector2) -> void:
@@ -37,5 +43,9 @@ func is_pickup(pos: Vector2) -> bool:
 	return get_cell_source_id(local_to_map(pos)) == 2 and get_cell_atlas_coords(local_to_map(pos)) in PICKUP_COORDS
 
 func _on_reset_pickups() -> void:
+	pause = true
 	for pickup in spent_pickups:
-		reset_pickup(pickup[0], pickup[1])
+		reset_pickup(pickup[0], pickup[1], false)
+	spent_pickups.clear()
+	times.clear()
+	pause = false
