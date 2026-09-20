@@ -13,6 +13,7 @@ config_version=5
 config/name="Hack Club Platformer Demo"
 run/main_scene="uid://d0nuvqre44hov"
 config/features=PackedStringArray("4.7", "GL Compatibility")
+config/icon="uid://bnnnpcv04ntri"
 
 [display]
 
