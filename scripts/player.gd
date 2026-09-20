@@ -2,6 +2,7 @@ extends CharacterBody2D
 
 signal died
 
+@onready var audio_player := get_parent().get_node("Camera2D").get_node("AudioStreamPlayer2D")
 @onready var camera := get_parent().get_node("Camera2D")
 @onready var anim_sprite := $AnimatedSprite2D
 @onready var hurtbox := $Hurtbox
@@ -11,6 +12,10 @@ signal died
 @onready var tilemap = get_parent().get_node("TileMapLayer")
 @onready var spawn_pos := global_position
 @onready var healbox_ssh : Vector2 = get_node("Healbox").get_node("CollisionShape2D").shape.size / 2.0
+
+var jump_sound = preload("res://assets/jump.wav")
+var death_sound = preload("res://assets/hitHurt.wav")
+var win_sound = preload("res://assets/powerUp.wav")
 
 const SPEED := 250.0
 const GRAVITY := 1.25
@@ -41,7 +46,6 @@ func _process(delta: float) -> void:
 		jump_counter.text = ""
 
 func _physics_process(delta: float) -> void:
-	
 	if not is_on_floor() and not locked:
 		velocity += get_gravity() * delta * GRAVITY
 		coyote_timer += delta
@@ -55,6 +59,8 @@ func _physics_process(delta: float) -> void:
 	if input and not jumped and Input.is_action_just_pressed("jump") and (coyote_timer <= COYOTE_TIME or extra_jumps > 0):
 		if not coyote_timer <= COYOTE_TIME:
 			extra_jumps -= 1
+		audio_player.stream = jump_sound
+		audio_player.play()
 		velocity.y = JUMP_VELOCITY
 		jumped = true
 	
@@ -103,8 +109,11 @@ func _on_died(_play_anim := true) -> void:
 		input = false
 		locked = true
 		if _play_anim:
+			audio_player.stream = death_sound
+			audio_player.play()
 			anim_sprite.play("death")
 			await anim_sprite.animation_looped
+		tilemap.reset_pickups.emit()
 		global_position = spawns[level + 2]
 		winning = false
 		velocity = Vector2(0, 0)
@@ -137,8 +146,10 @@ func _on_healbox_body_entered(_body: Node2D) -> void:
 		picking_up = false
 
 
-func _on_winbox_body_entered(body: Node2D) -> void:
+func _on_winbox_body_entered(_body: Node2D) -> void:
 	if not winning:
+		audio_player.stream = win_sound
+		audio_player.play()
 		winning = true
 		level += 1
 		camera.get_node("LevelLabel").text = str(level)

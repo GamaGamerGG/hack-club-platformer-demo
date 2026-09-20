@@ -38,4 +38,4 @@ func is_pickup(pos: Vector2) -> bool:
 
 func _on_reset_pickups() -> void:
 	for pickup in spent_pickups:
-		set_cell(pickup[0], 2, Vector2i(pickup[1], 1))
+		reset_pickup(pickup[0], pickup[1])
