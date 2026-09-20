@@ -13,7 +13,6 @@ config_version=5
 config/name="Hack Club Platformer Demo"
 run/main_scene="uid://d0nuvqre44hov"
 config/features=PackedStringArray("4.7", "GL Compatibility")
-config/icon="res://assets/icon.svg"
 
 [display]
 
@@ -59,6 +58,7 @@ jump={
 2d_physics/layer_2="Danger"
 2d_physics/layer_3="Player"
 2d_physics/layer_4="Pickups"
+2d_physics/layer_5="Win"
 
 [physics]
 

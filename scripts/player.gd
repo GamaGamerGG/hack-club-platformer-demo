@@ -2,9 +2,11 @@ extends CharacterBody2D
 
 signal died
 
+@onready var camera := get_parent().get_node("Camera2D")
 @onready var anim_sprite := $AnimatedSprite2D
 @onready var hurtbox := $Hurtbox
 @onready var healbox := $Healbox
+@onready var winbox := $Winbox
 @onready var jump_counter := $JumpCounter
 @onready var tilemap = get_parent().get_node("TileMapLayer")
 @onready var spawn_pos := global_position
@@ -24,6 +26,13 @@ var input := false
 var locked := false
 var extra_jumps := 0
 var picking_up := false
+
+var level := -2
+var spawns := [Vector2(80.0, 160.0), Vector2(2260.0, 550.0)]
+var winning := false
+
+func _ready() -> void:
+	died.emit(false)
 
 func _process(delta: float) -> void:
 	if extra_jumps:
@@ -81,21 +90,23 @@ func _physics_process(delta: float) -> void:
 	
 	move_and_slide()
 	
-	if global_position.y >= 650:
+	if global_position.y >= 666:
 		died.emit()
 	
 	if not input and is_on_floor() and not locked:
 		input = true
 
 
-func _on_died() -> void:
+func _on_died(_play_anim := true) -> void:
 	if not locked:
 		velocity = Vector2(0, 0)
 		input = false
 		locked = true
-		anim_sprite.play("death")
-		await anim_sprite.animation_looped
-		global_position = spawn_pos
+		if _play_anim:
+			anim_sprite.play("death")
+			await anim_sprite.animation_looped
+		global_position = spawns[level + 2]
+		winning = false
 		velocity = Vector2(0, 0)
 		jump_timer = 0.0
 		coyote_timer = COYOTE_TIME
@@ -106,7 +117,6 @@ func _on_died() -> void:
 
 func _on_hurtbox_body_entered(_body: Node2D) -> void:
 	died.emit()
-
 
 func _on_healbox_body_entered(_body: Node2D) -> void:
 	if not picking_up:
@@ -124,3 +134,13 @@ func _on_healbox_body_entered(_body: Node2D) -> void:
 				tilemap.queue_pickup(corner)
 				picking_up = false
 				return
+		picking_up = false
+
+
+func _on_winbox_body_entered(body: Node2D) -> void:
+	if not winning:
+		winning = true
+		level += 1
+		camera.get_node("LevelLabel").text = str(level)
+		camera.global_position.x += 1200
+		died.emit(false)

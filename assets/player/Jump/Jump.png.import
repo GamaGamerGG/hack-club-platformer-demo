@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://c3mmf6i7yeiir"
-path="res://.godot/imported/16-bit-spike-Sheet.png-a7aebad31305908e253ea2f301541798.ctex"
+uid="uid://wnxh1s8u4f5i"
+path="res://.godot/imported/Jump.png-34b6371b8bc497e1969f290b7fcffd9c.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/16-bit-spike-Sheet.png"
-dest_files=["res://.godot/imported/16-bit-spike-Sheet.png-a7aebad31305908e253ea2f301541798.ctex"]
+source_file="res://assets/player/Jump/Jump.png"
+dest_files=["res://.godot/imported/Jump.png-34b6371b8bc497e1969f290b7fcffd9c.ctex"]
 
 [params]
 

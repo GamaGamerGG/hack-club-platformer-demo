@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://djlb0axsckh5o"
-path="res://.godot/imported/GrassDirt.png-003655c725e4ea7b23bc6687042eae12.ctex"
+uid="uid://tms0hh766udt"
+path="res://.godot/imported/JumpDown.png-610de5c839b9779933d6827896f09a08.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/GrassDirt.png"
-dest_files=["res://.godot/imported/GrassDirt.png-003655c725e4ea7b23bc6687042eae12.ctex"]
+source_file="res://assets/player/Jump/JumpDown.png"
+dest_files=["res://.godot/imported/JumpDown.png-610de5c839b9779933d6827896f09a08.ctex"]
 
 [params]
 

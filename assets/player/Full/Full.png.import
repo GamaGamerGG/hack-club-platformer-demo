@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://1yjidxfayw41"
-path="res://.godot/imported/Death.png-d06b9a3bcfb2e2bff287ddb40706e313.ctex"
+uid="uid://623ngurx573m"
+path="res://.godot/imported/Full.png-c5de1a02ab99264b1f7dd323495eafd8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/StickmanPack/Death/Death.png"
-dest_files=["res://.godot/imported/Death.png-d06b9a3bcfb2e2bff287ddb40706e313.ctex"]
+source_file="res://assets/player/Full/Full.png"
+dest_files=["res://.godot/imported/Full.png-c5de1a02ab99264b1f7dd323495eafd8.ctex"]
 
 [params]
 
