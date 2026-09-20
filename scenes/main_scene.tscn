@@ -8,9 +8,11 @@
 [ext_resource type="Texture2D" uid="uid://qjx7belnnhot" path="res://assets/StickmanPack/Jump/JumpUp.png" id="5_c1pb6"]
 [ext_resource type="Texture2D" uid="uid://dgpgtk5pjuqwv" path="res://assets/StickmanPack/Run/Run.png" id="6_6wevv"]
 [ext_resource type="Texture2D" uid="uid://c3mmf6i7yeiir" path="res://assets/16-bit-spike-Sheet.png" id="8_18nlu"]
+[ext_resource type="Texture2D" uid="uid://ibba1nd0fa7" path="res://assets/arrows.png" id="9_c1pb6"]
+[ext_resource type="Script" uid="uid://dpu8ye701stml" path="res://scenes/pickups.gd" id="10_6wevv"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_sxuw7"]
-size = Vector2(31, 55.5)
+size = Vector2(31, 51.5)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_mngbo"]
 atlas = ExtResource("2_c16ls")
@@ -330,37 +332,32 @@ texture = ExtResource("8_18nlu")
 3:0/0 = 0
 3:0/0/physics_layer_1/polygon_0/points = PackedVector2Array(-5, 0, 8, -8, 8, 8)
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_6wevv"]
+texture = ExtResource("9_c1pb6")
+0:0/0 = 0
+1:0/0 = 0
+0:1/0 = 0
+0:1/0/physics_layer_2/polygon_0/points = PackedVector2Array(-5, -7, 4, -7, 4, 6, -5, 6)
+1:1/0 = 0
+1:1/0/physics_layer_2/polygon_0/points = PackedVector2Array(-5, -7, 4, -7, 4, 6, -5, 6)
+
 [sub_resource type="TileSet" id="TileSet_sxuw7"]
 physics_layer_0/collision_layer = 1
 physics_layer_0/collision_mask = 0
 physics_layer_1/collision_layer = 2
 physics_layer_1/collision_mask = 4
+physics_layer_2/collision_layer = 8
+physics_layer_2/collision_mask = 4
 sources/0 = SubResource("TileSetAtlasSource_mngbo")
 sources/1 = SubResource("TileSetAtlasSource_c1pb6")
+sources/2 = SubResource("TileSetAtlasSource_6wevv")
 
 [node name="Node2D" type="Node2D" unique_id=1679894334]
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=1768087132]
-position = Vector2(109, 89)
+position = Vector2(100, 100)
 collision_layer = 0
 script = ExtResource("1_7ykc4")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1760328925]
-position = Vector2(0, 1.25)
-shape = SubResource("RectangleShape2D_sxuw7")
-
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=576628501]
-texture_filter = 1
-sprite_frames = SubResource("SpriteFrames_sxuw7")
-animation = &"idle"
-
-[node name="Hurtbox" type="Area2D" parent="Player" unique_id=1075993957]
-collision_layer = 4
-collision_mask = 2
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Hurtbox" unique_id=260856982]
-position = Vector2(0, 1.25)
-shape = SubResource("RectangleShape2D_sxuw7")
 
 [node name="JumpCounter" type="RichTextLabel" parent="Player" unique_id=1302554616]
 offset_left = -13.0
@@ -372,11 +369,39 @@ text = "1"
 horizontal_alignment = 1
 vertical_alignment = 2
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1760328925]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_sxuw7")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Player" unique_id=576628501]
+texture_filter = 1
+sprite_frames = SubResource("SpriteFrames_sxuw7")
+animation = &"run"
+
+[node name="Hurtbox" type="Area2D" parent="Player" unique_id=1075993957]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Hurtbox" unique_id=1388787002]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_sxuw7")
+
+[node name="Healbox" type="Area2D" parent="Player" unique_id=27668549]
+collision_layer = 4
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player/Healbox" unique_id=546528226]
+position = Vector2(0, 3)
+shape = SubResource("RectangleShape2D_sxuw7")
+
 [node name="TileMapLayer" type="TileMapLayer" parent="." unique_id=564486156]
 texture_filter = 1
 scale = Vector2(3, 3)
-tile_map_data = PackedByteArray("AAABAAYAAAAAAAAAAAABAAcAAAAAAAEAAAABAAgAAAAAAAEAAAABAAkAAAAAAAEAAAABAAoAAAAAAAEAAAACAAYAAAABAAAAAAADAAYAAAABAAAAAAAEAAYAAAABAAAAAAAFAAYAAAABAAAAAAAGAAYAAAABAAAAAAAHAAYAAAABAAAAAAAIAAYAAAACAAAAAAAIAAcAAAACAAEAAAAIAAgAAAACAAEAAAAIAAkAAAACAAEAAAAIAAoAAAACAAEAAAACAAcAAAABAAEAAAADAAcAAAABAAEAAAAEAAcAAAABAAEAAAAFAAcAAAABAAEAAAAGAAcAAAABAAEAAAAHAAcAAAABAAEAAAAHAAgAAAABAAEAAAAGAAgAAAABAAEAAAAFAAgAAAABAAEAAAAEAAgAAAABAAEAAAADAAgAAAABAAEAAAACAAgAAAABAAEAAAACAAkAAAABAAEAAAADAAkAAAABAAEAAAAEAAkAAAABAAEAAAAFAAkAAAABAAEAAAAGAAkAAAABAAEAAAAHAAkAAAABAAEAAAAHAAoAAAABAAEAAAAGAAoAAAABAAEAAAAFAAoAAAABAAEAAAAEAAoAAAABAAEAAAADAAoAAAABAAEAAAACAAoAAAABAAEAAAALAAQAAAAEAAAAAAALAAUAAAAEAAEAAAALAAYAAAAEAAEAAAALAAcAAAAEAAEAAAALAAgAAAAEAAEAAAALAAkAAAAEAAEAAAALAAoAAAAEAAEAAAAQAAQAAAACAAAAAAAPAAQAAAAAAAAAAAAQAAUAAAACAAIAAAAPAAUAAAAAAAIAAAAIAAsAAAACAAEAAAAIAAwAAAACAAEAAAAIAA0AAAACAAEAAAAIAA4AAAACAAEAAAABAAsAAAAAAAEAAAABAAwAAAAAAAEAAAABAA0AAAAAAAEAAAABAA4AAAAAAAEAAAACAAsAAAABAAEAAAACAAwAAAABAAEAAAACAA0AAAABAAEAAAACAA4AAAABAAEAAAADAA4AAAABAAEAAAAEAA4AAAABAAEAAAAEAA0AAAABAAEAAAADAA0AAAABAAEAAAADAAwAAAABAAEAAAADAAsAAAABAAEAAAAEAAsAAAABAAEAAAAEAAwAAAABAAEAAAAFAAwAAAABAAEAAAAFAAsAAAABAAEAAAAFAA0AAAABAAEAAAAFAA4AAAABAAEAAAAGAA4AAAABAAEAAAAGAA0AAAABAAEAAAAGAAwAAAABAAEAAAAGAAsAAAABAAEAAAAHAAsAAAABAAEAAAAHAAwAAAABAAEAAAAHAA0AAAABAAEAAAAHAA4AAAABAAEAAAALAAsAAAAEAAEAAAALAAwAAAAEAAEAAAALAA0AAAAEAAEAAAALAA4AAAAEAAEAAAALAA8AAAAEAAEAAAAMAAEAAAAEAAQAAAAGAAUAAQAAAAAAAAAFAAUAAQAAAAAAAAAEAAUAAQAAAAAAAAA=")
+tile_map_data = PackedByteArray("AAABAAYAAAAAAAAAAAABAAcAAAAAAAEAAAABAAgAAAAAAAEAAAABAAkAAAAAAAEAAAABAAoAAAAAAAEAAAACAAYAAAABAAAAAAADAAYAAAABAAAAAAAEAAYAAAABAAAAAAAFAAYAAAABAAAAAAAGAAYAAAABAAAAAAAHAAYAAAABAAAAAAAIAAYAAAACAAAAAAAIAAcAAAACAAEAAAAIAAgAAAACAAEAAAAIAAkAAAACAAEAAAAIAAoAAAACAAEAAAACAAcAAAABAAEAAAADAAcAAAABAAEAAAAEAAcAAAABAAEAAAAFAAcAAAABAAEAAAAGAAcAAAABAAEAAAAHAAcAAAABAAEAAAAHAAgAAAABAAEAAAAGAAgAAAABAAEAAAAFAAgAAAABAAEAAAAEAAgAAAABAAEAAAADAAgAAAABAAEAAAACAAgAAAABAAEAAAACAAkAAAABAAEAAAADAAkAAAABAAEAAAAEAAkAAAABAAEAAAAFAAkAAAABAAEAAAAGAAkAAAABAAEAAAAHAAkAAAABAAEAAAAHAAoAAAABAAEAAAAGAAoAAAABAAEAAAAFAAoAAAABAAEAAAAEAAoAAAABAAEAAAADAAoAAAABAAEAAAACAAoAAAABAAEAAAALAAQAAAAEAAAAAAALAAUAAAAEAAEAAAALAAYAAAAEAAEAAAALAAcAAAAEAAEAAAALAAgAAAAEAAEAAAALAAkAAAAEAAEAAAALAAoAAAAEAAEAAAAIAAsAAAACAAEAAAAIAAwAAAACAAEAAAAIAA0AAAACAAEAAAAIAA4AAAACAAEAAAABAAsAAAAAAAEAAAABAAwAAAAAAAEAAAABAA0AAAAAAAEAAAABAA4AAAAAAAEAAAACAAsAAAABAAEAAAACAAwAAAABAAEAAAACAA0AAAABAAEAAAACAA4AAAABAAEAAAADAA4AAAABAAEAAAAEAA4AAAABAAEAAAAEAA0AAAABAAEAAAADAA0AAAABAAEAAAADAAwAAAABAAEAAAADAAsAAAABAAEAAAAEAAsAAAABAAEAAAAEAAwAAAABAAEAAAAFAAwAAAABAAEAAAAFAAsAAAABAAEAAAAFAA0AAAABAAEAAAAFAA4AAAABAAEAAAAGAA4AAAABAAEAAAAGAA0AAAABAAEAAAAGAAwAAAABAAEAAAAGAAsAAAABAAEAAAAHAAsAAAABAAEAAAAHAAwAAAABAAEAAAAHAA0AAAABAAEAAAAHAA4AAAABAAEAAAALAAsAAAAEAAEAAAALAAwAAAAEAAEAAAALAA0AAAAEAAEAAAALAA4AAAAEAAEAAAALAA8AAAAEAAEAAAAMAAEAAAAEAAQAAAAFAAUAAQAAAAAAAAAEAAUAAQAAAAAAAAALAAIAAgABAAEAAAAIAAQAAgAAAAEAAAAVAAIAAAAAAAAAAAAVAAMAAAAAAAIAAAAWAAIAAAACAAAAAAAWAAMAAAACAAIAAAA=")
 tile_set = SubResource("TileSet_sxuw7")
+script = ExtResource("10_6wevv")
 
 [connection signal="died" from="Player" to="Player" method="_on_died"]
 [connection signal="body_entered" from="Player/Hurtbox" to="Player" method="_on_hurtbox_body_entered"]
+[connection signal="body_entered" from="Player/Healbox" to="Player" method="_on_healbox_body_entered"]
+[connection signal="reset_pickups" from="TileMapLayer" to="TileMapLayer" method="_on_reset_pickups"]
