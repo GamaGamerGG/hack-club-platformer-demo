@@ -13,7 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://bhsmeodehx3sl" path="res://assets/hitHurt.wav" id="8_bcnxi"]
 [ext_resource type="AudioStream" uid="uid://5ckqvcmvdgs5" path="res://assets/pickupCoin.wav" id="9_7nt27"]
 [ext_resource type="Texture2D" uid="uid://ibba1nd0fa7" path="res://assets/arrows.png" id="9_c1pb6"]
-[ext_resource type="Script" uid="uid://dpu8ye701stml" path="res://scenes/pickups.gd" id="10_6wevv"]
+[ext_resource type="Script" uid="uid://dpu8ye701stml" path="res://scripts/pickups.gd" id="10_6wevv"]
 [ext_resource type="Texture2D" uid="uid://b06fiil6rs1ij" path="res://assets/win.png" id="10_e1cbu"]
 [ext_resource type="AudioStream" uid="uid://cbraml00xdl0g" path="res://assets/powerUp.wav" id="10_k6f3i"]
 [ext_resource type="AudioStream" uid="uid://bnu1y4k44m14a" path="res://assets/replenish.wav" id="11_xdqt8"]
