@@ -369,6 +369,7 @@ sources/3 = SubResource("TileSetAtlasSource_4w45t")
 position = Vector2(575, 333)
 
 [node name="LevelLabel" type="Label" parent="Camera2D" unique_id=1518780372]
+z_index = 1
 offset_left = 334.0
 offset_top = -267.0
 offset_right = 525.0
