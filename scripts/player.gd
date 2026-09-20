@@ -34,8 +34,7 @@ var locked := false
 var extra_jumps := 0
 var picking_up := false
 
-#var level := -1
-var level := 16
+var level := -1
 var spawns := [
 Vector2(80.0, 160.0), Vector2(2260.0, 550.0), 
 Vector2(2520.0, 500.0), Vector2(3720.0, 280.0), Vector2(4960.0, 580.0), Vector2(6960.0, 140.0), Vector2(7800.0, 560.0),
